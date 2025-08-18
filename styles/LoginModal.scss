@@ -11,12 +11,11 @@
 }
 
 .overlay {
-	
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: #F1F1F1ae;
+	background: #f1f1f1ae;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -28,8 +27,8 @@
 }
 
 .modal {
-	margin-top: 20px;
-	background: #F1F1F1;
+	margin-top: 60px;
+	background: #f1f1f1;
 	padding: 20px;
 	border-radius: 10px;
 	width: 325px;
@@ -53,7 +52,9 @@ input {
 	border: none;
 }
 
-.btn-to-login, .btn-to-reg {
+.btn-to-login,
+.btn-to-reg,
+.btn-to-save-password {
 	display: flex;
 	align-items: center;
 	margin: 7px;
@@ -61,21 +62,26 @@ input {
 	padding: 7px;
 	margin-top: 20px;
 	background-color: black;
-	color: #F1F1F1;
+	color: #f1f1f1;
 	font-weight: 100;
 	border: none;
 	cursor: pointer;
-	-webkit-box-shadow: 2px 2px 0px 1px #F1F1F1;
-	-moz-box-shadow: 2px 2px 0px 1px #F1F1F1;
-	box-shadow: 2px 2px 0px 1px #F1F1F1;
+	-webkit-box-shadow: 2px 2px 0px 1px #f1f1f1;
+	-moz-box-shadow: 2px 2px 0px 1px #f1f1f1;
+	box-shadow: 2px 2px 0px 1px #f1f1f1;
 	box-shadow: 0px 0px 2px #000000;
-	transition: all .4s;
+	transition: all 0.4s;
 	font-size: 16px !important;
 	border-radius: 10px;
 }
 
 .btn-to-login:hover {
-	background-color: #F1F1F1;
+	background-color: #f1f1f1;
+	color: #000000;
+}
+
+.btn-to-save-password:hover {
+	background-color: #f1f1f1;
 	color: #000000;
 }
 
@@ -85,7 +91,7 @@ input {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: #F1F1F1ae;
+	background: #f1f1f1ae;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -93,13 +99,14 @@ input {
 }
 
 .modal-register {
-	background: #F1F1F1;
+	background: #f1f1f1;
 	padding: 20px;
 	border-radius: 10px;
-	width: 325px;
+	width: 345px;
 	max-width: 90%;
 	box-shadow: 0px 0px 2px #000000;
 	color: black;
+	margin-top: 60px;
 
 	h2 {
 		padding: 15px;
@@ -107,6 +114,6 @@ input {
 }
 
 .btn-to-reg:hover {
-	background-color: #F1F1F1;
+	background-color: #f1f1f1;
 	color: #000000;
 }

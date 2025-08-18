@@ -5,6 +5,7 @@ body {
 	margin: 0 auto;
 	background-color: #f1f1f1;
 	max-width: 1100px;
+	font-family: 'Roboto Condensed', sans-serif !important;
 	// display: flex;
 	// flex-direction: column;
 	// justify-content: center;
@@ -151,6 +152,7 @@ body {
 	margin-left: 20px;
 	margin-right: 20px;
 	font-family: 'Roboto Condensed', sans-serif;
+	margin-bottom: 10px;
 
 	h1 {
 		display: flex;
@@ -232,10 +234,11 @@ body {
 			box-shadow: 5px 5px 0px 1px #000000;
 			transition: all 0.5s;
 			font-weight: 700;
+			color: black !important;
 		}
 		button:hover {
 			background-color: #000000;
-			color: #f1f1f1;
+			color: #f1f1f1 !important;
 			border: 2px solid #f1f1f1;
 			-webkit-box-shadow: 5px 5px 0px 1px transparent;
 			-moz-box-shadow: 5px 5px 0px 1px transparent;
@@ -375,10 +378,11 @@ body {
 			-moz-box-shadow: 5px 5px 0px 1px #000000;
 			box-shadow: 5px 5px 0px 1px #000000;
 			font-weight: 700;
+			color: black !important;
 		}
 		button:hover {
 			background-color: #000000;
-			color: #f1f1f1;
+			color: #f1f1f1 !important;
 			border: 2px solid #000000;
 			-webkit-box-shadow: 5px 5px 0px 1px transparent;
 			-moz-box-shadow: 5px 5px 0px 1px transparent;
@@ -434,8 +438,8 @@ body {
 		width: 100%;
 		.logo {
 			img {
-				width: 120px;
-				padding-top: 5px;
+				width: 130px;
+				padding-top: 10px;
 			}
 		}
 
@@ -452,7 +456,7 @@ body {
 		flex-direction: column;
 
 		.to-register-now {
-			padding: 15px 20px;
+			padding: 0px 20px;
 			p {
 				font-family: 'Roboto Condensed', sans-serif;
 			}
@@ -471,7 +475,7 @@ body {
 	position: sticky;
 	// bottom: 8px;
 	// right: 8px;
-	z-index: 10000;
+	z-index: 100000;
 	background-color: #ffffff;
 	border-radius: 25px;
 	-webkit-box-shadow: 2px 1px 15px -7px rgba(23, 59, 69, 1);
@@ -529,6 +533,7 @@ body {
 		font-family: 'Roboto Condensed', sans-serif;
 		letter-spacing: 2px;
 		cursor: pointer;
+		color: black !important;
 	}
 
 	.mobile-subitem {
@@ -557,6 +562,22 @@ body {
 
 .all {
 	height: 100vh;
+}
+
+#reset-password-page {
+	max-width: 450px;
+	margin: 0 auto;
+	margin-top: 190px;
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	font-family: 'Roboto Condensed', sans-serif;
+
+	h2 {
+		margin-bottom: 20px;
+		margin-top: 20px;
+	}
 }
 
 @media (min-width: 200px) {
@@ -626,4 +647,12 @@ body {
 	// 	margin-left: 0px;
 	// 	margin-right: 0px;
 	// }
+}
+
+input {
+	font-size: 16px !important;
+}
+
+.logo-and-menubutton.active-bg {
+  background-color: #f1f1f1 !important;
 }

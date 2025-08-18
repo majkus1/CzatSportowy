@@ -6,6 +6,7 @@ import io from 'socket.io-client'
 import { GiPlayButton } from 'react-icons/gi'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000', {
 	withCredentials: true,
@@ -100,7 +101,7 @@ const ChatComponent = ({
 							awayTeam,
 							isLive,
 							currentGoals,
-							language: (router.locale === 'pl' ? 'pl' : 'en'),
+							language: router.locale === 'pl' ? 'pl' : 'en',
 							prediction,
 							homeStats: {
 								playedTotal: homeStats?.playedTotal || 0,
@@ -298,13 +299,34 @@ const ChatComponent = ({
 				</Modal>
 			)}
 			<div className="messages-container" ref={messagesContainerRef}>
-				{isAnalysisEnabled && (
+				{/* {isAnalysisEnabled && (
 					<div className="match-analysis">
-						<p style={{ whiteSpace: 'pre-line' }}>{analysis.text}</p>
+						{' '}
+						<p style={{ whiteSpace: 'pre-line' }}>{analysis.text}</p>{' '}
 						{analysis.pred && (
 							<p style={{ marginTop: '10px' }}>
-								<strong>Przewidywanie:</strong> {analysis.pred}
+								{' '}
+								<strong>Przewidywanie:</strong> {analysis.pred}{' '}
 							</p>
+						)}{' '}
+					</div>
+				)} */}
+				{isAnalysisEnabled && (
+					<div className="match-analysis">
+						{analysis.text === t('ai') ? (
+							<>
+								<ClipLoader color="#111" size={40} />
+								<p>{t('ai')}</p>
+							</>
+						) : (
+							<>
+								<p style={{ whiteSpace: 'pre-line' }}>{analysis.text}</p>
+								{analysis.pred && (
+									<p style={{ marginTop: '10px' }}>
+										<strong>Przewidywanie:</strong> {analysis.pred}
+									</p>
+								)}
+							</>
 						)}
 					</div>
 				)}

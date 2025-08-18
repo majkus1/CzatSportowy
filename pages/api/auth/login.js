@@ -17,16 +17,16 @@ export default async function handler(req, res) {
 
     const { username, password } = req.body || {};
     if (!ensureString(username, 32) || !ensureString(password, 200)) {
-      return res.status(400).send('Nieprawidłowe dane');
+      return res.status(400).send({ error: 'login_bad_data' });
     }
 
     const user = await User.findOne({ username: username.trim() });
     if (!user || !user.password) {
-      return res.status(401).send('Nieprawidłowy username lub hasło');
+      return res.status(401).send({ error: 'login_invalid' });
     }
 
     const ok = await bcrypt.compare(password, user.password);
-    if (!ok) return res.status(401).send('Nieprawidłowy username lub hasło');
+    if (!ok) return res.status(401).send({ error: 'login_invalid' });
 
     // Access + Refresh (ROTACJA po stronie /refresh)
     const accessToken  = signAccessToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 });
@@ -43,6 +43,5 @@ export default async function handler(req, res) {
     res.status(200).json({ ok: true, username: user.username });
   } catch (err) {
     console.error('login error:', err);
-    res.status(500).send('Wewnętrzny błąd serwera');
   }
 }

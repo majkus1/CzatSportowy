@@ -5,6 +5,7 @@ import { UserContext } from '@/context/UserContext'
 import UserPanel from '@/components/UserPanel'
 import { GiPlayButton } from 'react-icons/gi'
 import { useTranslation } from 'next-i18next'
+import ForgotPasswordModal from '@/components/ForgotPasswordModal'
 import LanguageSwitcher from './LanguageSwitcher'
 import Link from 'next/link'
 
@@ -16,8 +17,9 @@ export default function NavBar({ onLanguageChange }) {
 	const [isMobileLinksMenuOpen, setMobileLinksMenuOpen] = useState(false)
 	const [isClient, setIsClient] = useState(false)
 	const [isSportsOpen, setIsSportsOpen] = useState(false)
+	const [isForgotOpen, setForgotOpen] = useState(false)
 
-	const { t } = useTranslation('common')
+	const { t, i18n } = useTranslation('common')
 
 	// NOWY kontekst
 	const { user, isAuthed, setUser, setIsAuthed, refreshUser } = useContext(UserContext)
@@ -64,11 +66,17 @@ export default function NavBar({ onLanguageChange }) {
 					<LanguageSwitcher onLanguageChange={onLanguageChange} />
 				</div>
 
-				<div className="logo-and-menubutton">
+				<div
+					className={`logo-and-menubutton ${isMobileLinksMenuOpen ? 'active-bg' : ''} || ${
+						isMobileMenuOpen ? 'active-bg' : ''
+					}`}>
 					<div className="menubutton">
 						<div className="mobile-menu">
 							<Link href="/" className="logo">
-								<img src="/img/logo-czat-sportowy-pl.png" alt="Czat Sportowy" />
+								<img
+									src={i18n.language === 'en' ? '/img/sports-chat-logo.png' : '/img/logo-czat-sportowy-pl.png'}
+									alt={i18n.language === 'en' ? 'Sports Chat' : 'Czat Sportowy'}
+								/>
 							</Link>
 
 							<div className="elementsinmenu">
@@ -81,6 +89,7 @@ export default function NavBar({ onLanguageChange }) {
 											setMobileMenuOpen(false)
 											setRegisterModalOpen(false)
 											setLoginModalOpen(false)
+											setForgotOpen(false)
 										}}
 									/>
 								) : (
@@ -129,31 +138,55 @@ export default function NavBar({ onLanguageChange }) {
 								) : (
 									<>
 										<div className="elements-in-account-menu">
-											<LoginModal
-												isOpen={isLoginModalOpen}
-												// onRequestClose={() => setLoginModalOpen(false)}
-												onLogin={handleLogin} // po sukcesie: refreshUser + zamknij
-											/>
-
-											<div className="to-register-now">
-												<button
-													onClick={() => {
-														setRegisterModalOpen(true)
-														setLoginModalOpen(false)
+											{/* === Gdy otwarty forgot -> pokazujemy TYLKO ten modal === */}
+											{isForgotOpen ? (
+												<ForgotPasswordModal
+													isOpen={isForgotOpen}
+													onRequestClose={() => {
+														setForgotOpen(false)
+														setLoginModalOpen(true) // po zamknięciu wracamy do logowania
 													}}
-													className="btn-reg">
-													<GiPlayButton /> {t('registernow')}
-												</button>
-											</div>
+												/>
+											) : (
+												<>
+													<LoginModal isOpen={isLoginModalOpen} onLogin={handleLogin} />
 
-											<RegisterModal
-												isOpen={isRegisterModalOpen}
-												onRequestClose={() => {
-													setRegisterModalOpen(false)
-													setLoginModalOpen(true)
-												}}
-												onRegister={handleRegister} // po sukcesie: refreshUser + zamknij
-											/>
+													{/* Przycisk "Zapomniałem hasła" */}
+													<div className="to-register-now" style={{ marginTop: '15px' }}>
+														<button
+															onClick={() => {
+																setForgotOpen(true)
+																setLoginModalOpen(false)
+																setRegisterModalOpen(false)
+															}}
+															className="btn-reg">
+															<GiPlayButton /> {t('forgot_link')}
+														</button>
+													</div>
+
+													{/* Przycisk rejestracji */}
+													<div className="to-register-now">
+														<button
+															onClick={() => {
+																setRegisterModalOpen(true)
+																setLoginModalOpen(false)
+																setForgotOpen(false)
+															}}
+															className="btn-reg">
+															<GiPlayButton /> {t('registernow')}
+														</button>
+													</div>
+
+													<RegisterModal
+														isOpen={isRegisterModalOpen}
+														onRequestClose={() => {
+															setRegisterModalOpen(false)
+															setLoginModalOpen(true)
+														}}
+														onRegister={handleRegister}
+													/>
+												</>
+											)}
 										</div>
 									</>
 								)}
