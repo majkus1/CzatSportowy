@@ -1,4 +1,3 @@
-// /components/LoginModal.js
 import React, { useState, useContext } from 'react'
 import { UserContext } from '@/context/UserContext'
 import { GiPlayButton } from 'react-icons/gi'
@@ -23,7 +22,6 @@ export default function LoginModal({ isOpen, onRequestClose, onLogin }) {
 		})
 
 		if (response.ok) {
-			// Cookies ustawione; pobierz profil i ustaw kontekst
 			const ok = await refreshUser()
 			if (ok) {
 				onLogin?.()

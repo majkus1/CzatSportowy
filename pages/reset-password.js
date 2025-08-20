@@ -1,4 +1,3 @@
-// /pages/reset-password.js
 import { useRouter } from 'next/router'
 import { GiPlayButton } from 'react-icons/gi'
 import { useState } from 'react'
@@ -94,7 +93,6 @@ export default function ResetPasswordPage() {
 	)
 }
 
-// i18n (jeśli używasz next-i18next)
 export async function getServerSideProps({ locale }) {
 	return { props: { ...(await serverSideTranslations(locale ?? 'pl', ['common'])) } }
 }

@@ -1,4 +1,3 @@
-// PrivateChatComponent.js
 import { useState, useEffect, useContext, useRef, useCallback } from 'react'
 import { UserContext } from '../context/UserContext'
 import io from 'socket.io-client'
@@ -19,10 +18,10 @@ const PrivateChatComponent = ({ receiver }) => {
 	const fetchWithRefresh = useCallback(async (url, opts = {}) => {
 		const res = await fetch(url, { credentials: 'include', ...opts })
 		if (res.status !== 401) return res
-		// spróbuj odświeżyć tokeny
+		
 		const r = await fetch('/api/auth/refresh', { method: 'POST', credentials: 'include' })
-		if (!r.ok) return res // brak refreshu – zostaw 401
-		// ponów oryginalny request
+		if (!r.ok) return res 
+		
 		return fetch(url, { credentials: 'include', ...opts })
 	}, [])
 

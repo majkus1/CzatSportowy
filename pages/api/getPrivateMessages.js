@@ -1,5 +1,3 @@
-// api/getPrivateMessages.js
-
 import connectToDb from '@/lib/db'
 import PrivateChat from '@/models/PrivateChat'
 

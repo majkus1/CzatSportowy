@@ -1,4 +1,3 @@
-// /pages/api/auth/forgot-password.js
 import crypto from 'crypto'
 import connectToDb from '@/lib/db'
 import User from '@/models/User'
@@ -8,7 +7,6 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end('Method Not Allowed')
 
   const { email } = req.body || {}
-  // Zwracaj 200 dla wszystkich przypadków (nie ujawniamy czy email istnieje)
   if (!email || typeof email !== 'string') {
     return res.status(200).json({ ok: true })
   }
@@ -17,12 +15,10 @@ export default async function handler(req, res) {
     await connectToDb()
     const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } })
 
-    // Zawsze 200 — ale token i mail wyślemy tylko gdy user istnieje
     if (!user) {
       return res.status(200).json({ ok: true })
     }
 
-    // 1) generujemy token (plaintext) i hashujemy go do bazy
     const tokenPlain = crypto.randomBytes(32).toString('hex')
     const tokenHash  = crypto.createHash('sha256').update(tokenPlain).digest('hex')
 
@@ -33,7 +29,6 @@ export default async function handler(req, res) {
     user.resetPasswordTokenExp  = exp
     await user.save()
 
-    // 2) wysyłka maila
     const base = process.env.APP_URL || 'http://localhost:3001'
     const resetLink = `${base}/reset-password?uid=${user._id.toString()}&token=${tokenPlain}`
 
@@ -56,7 +51,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true })
   } catch (e) {
     console.error('forgot-password error:', e)
-    // Wciąż nie ujawniamy — zawsze 200
     return res.status(200).json({ ok: true })
   }
 }

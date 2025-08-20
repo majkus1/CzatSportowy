@@ -1,4 +1,3 @@
-// server.js — Socket.IO (poprawiona walidacja chatId dla prywatnych czatów)
 require('dotenv').config();
 
 const express = require('express');
@@ -10,7 +9,6 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 
-/* 1) CORS – dev + prod */
 const allowedOrigins = [
   'http://localhost:3001',
   'https://czatsportowy.pl',
@@ -19,14 +17,12 @@ const allowedOrigins = [
 
 app.set('trust proxy', 1);
 
-/* 2) Twardsze nagłówki dla HTTP (gdybyś dodał trasy) */
 app.use(
   helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 
-/* 3) CORS dla HTTP */
 app.use(
   cors({
     origin(origin, cb) {
@@ -38,34 +34,30 @@ app.use(
   })
 );
 
-/* 4) Healthcheck */
 app.get('/health', (_req, res) => res.status(200).send('ok'));
 
 const server = http.createServer(app);
 
-/* 5) Socket.IO */
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
-  maxHttpBufferSize: 1e6,  // ~1MB/event
+  maxHttpBufferSize: 1e6,
   pingTimeout: 20000,
   pingInterval: 25000,
 });
 
-/* 6) Helpers */
 function readCookie(cookieHeader, name) {
   const cookie = cookieHeader || '';
   const m = cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
   return m ? decodeURIComponent(m[1]) : null;
 }
 
-// prosty rate-limit: 10 eventów / 3s
 const RATE_LIMIT_WINDOW = 3000;
 const RATE_LIMIT_COUNT = 10;
-const rateMap = new Map(); // socket.id -> { ts, count }
+const rateMap = new Map();
 function allowRate(socket) {
   const now = Date.now();
   const v = rateMap.get(socket.id) || { ts: now, count: 0 };
@@ -78,13 +70,9 @@ function allowRate(socket) {
   return v.count <= RATE_LIMIT_COUNT;
 }
 
-/* ⬇ BYŁO: /^[\w:-]{1,64}$/  (ASCII, bez spacji)
-   ⬇ JEST: pozwól na Unicode litery/cyfry + _ - : spacja, max 64
-*/
 const ROOM_RE = /^[\p{L}\p{N}_\s:-]{1,64}$/u;
 const MAX_MSG_LEN = 1000;
 
-/* 7) „Miękka” autoryzacja */
 io.use((socket, next) => {
   try {
     const cookie = socket.handshake.headers.cookie || '';
@@ -101,7 +89,6 @@ io.use((socket, next) => {
   next();
 });
 
-/* 8) Eventy */
 io.on('connection', (socket) => {
   const who = socket.user?.id ? `user:${socket.user.id}` : 'anon';
   console.log(`Socket connected: ${socket.id} (${who})`);
@@ -177,7 +164,6 @@ io.on('connection', (socket) => {
   });
 });
 
-/* 9) Start */
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Socket server listening on :${PORT}`);

@@ -1,4 +1,3 @@
-// /pages/api/auth/register.js
 import User from '@/models/User'
 import bcrypt from 'bcrypt'
 import connectToDb from '@/lib/db'
@@ -33,10 +32,8 @@ export default async function handler(req, res) {
 			email: emailNorm,
 			username: usernameNorm,
 			password: hashedPassword,
-			// tokenVersion domyślnie 0, refreshTokenHash null — zgodnie z modelem
 		})
 
-		// po rejestracji od razu zaloguj: wydaj access+refresh i zapisz hash refresh
 		const accessToken = signAccessToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 })
 		const refreshToken = signRefreshToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 })
 

@@ -1,4 +1,3 @@
-// /components/UserPanel.js
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { UserContext } from '@/context/UserContext';
 import Modal from './Modal';
@@ -6,7 +5,6 @@ import PrivateChatComponent from './PrivateChatComponent';
 import io from 'socket.io-client';
 import { useTranslation } from 'next-i18next'
 
-// TIP: zrób env i rozdziel dev/prod, np. NEXT_PUBLIC_SOCKET_URL
 const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000', {
   withCredentials: true
 });
@@ -19,20 +17,16 @@ export default function UserPanel() {
   const [searchResults, setSearchResults] = useState([]);
   const { t } = useTranslation('common');
 
-  // NOWY kontekst:
   const { user, isAuthed, refreshUser } = useContext(UserContext);
   const username = user?.username;
 
-  // helper: GET z auto-odświeżaniem access tokena
   const fetchWithRefresh = useCallback(async (url, opts = {}) => {
     const res = await fetch(url, { credentials: 'include', ...opts });
     if (res.status !== 401) return res;
 
-    // spróbuj odświeżyć
     const r = await fetch('/api/auth/refresh', { method: 'POST', credentials: 'include' });
-    if (!r.ok) return res; // dalej zwróć 401 – niech wyżej zareaguje
+    if (!r.ok) return res;
 
-    // retry
     return fetch(url, { credentials: 'include', ...opts });
   }, []);
 
@@ -67,16 +61,13 @@ export default function UserPanel() {
     }
   }, [username, fetchWithRefresh]);
 
-  // Po zalogowaniu: odśwież usera i załaduj historię
   useEffect(() => {
     if (isAuthed) {
-      // upewnij się, że mamy świeże dane profilu (opcjonalnie)
       refreshUser?.();
       fetchChatHistory();
     }
   }, [isAuthed, refreshUser, fetchChatHistory]);
 
-  // Sockety – nasłuchuj i dogrywaj historię
   useEffect(() => {
     if (!isAuthed) return;
 
@@ -104,7 +95,6 @@ export default function UserPanel() {
     fetchChatHistory();
   };
 
-  // Jeśli nie zalogowany – nie pokazuj panelu
   if (!isAuthed) return null;
 
   return (

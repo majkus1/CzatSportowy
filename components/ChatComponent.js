@@ -30,7 +30,6 @@ const ChatComponent = ({
 	const messagesContainerRef = useRef(null)
 	const router = useRouter()
 	const { t } = useTranslation('common')
-	// const [analysis, setAnalysis] = useState('')
 	const [analysis, setAnalysis] = useState({ text: '', pred: '' })
 
 	const { user, isAuthed } = useContext(UserContext)
@@ -205,20 +204,6 @@ const ChatComponent = ({
 					const data = await response.json()
 					const { text, prediction: pred } = parseAnalysis(data.analysis)
 					setAnalysis({ text: text || t('analysis_unavailable'), pred })
-					// const formatAnalysis = analysisText => {
-					// 	if (!analysisText) return t('analysis_unavailable')
-					// 	const predictionPattern = /Przewidywanie: (.+)$/i
-					// 	const match = analysisText.match(predictionPattern)
-					// 	if (match) {
-					// 		const predictionExtracted = match[1]
-					// 		return analysisText.replace(
-					// 			predictionPattern,
-					// 			`<br></br><strong>Przewidywanie:</strong> ${predictionExtracted}`
-					// 		)
-					// 	}
-					// 	return analysisText
-					// }
-					// setAnalysis(formatAnalysis(data.analysis))
 				} catch (error) {
 					console.error('Błąd podczas pobierania analizy:', error)
 				}
@@ -299,18 +284,6 @@ const ChatComponent = ({
 				</Modal>
 			)}
 			<div className="messages-container" ref={messagesContainerRef}>
-				{/* {isAnalysisEnabled && (
-					<div className="match-analysis">
-						{' '}
-						<p style={{ whiteSpace: 'pre-line' }}>{analysis.text}</p>{' '}
-						{analysis.pred && (
-							<p style={{ marginTop: '10px' }}>
-								{' '}
-								<strong>Przewidywanie:</strong> {analysis.pred}{' '}
-							</p>
-						)}{' '}
-					</div>
-				)} */}
 				{isAnalysisEnabled && (
 					<div className="match-analysis">
 						{analysis.text === t('ai') ? (

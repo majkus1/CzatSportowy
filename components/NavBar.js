@@ -11,8 +11,7 @@ import Link from 'next/link'
 
 export default function NavBar({ onLanguageChange }) {
 	const [isRegisterModalOpen, setRegisterModalOpen] = useState(false)
-	const [isLoginModalOpen, setLoginModalOpen] = useState(false) // nie otwieraj od razu
-	const [isUserPanelVisible, setUserPanelVisible] = useState(false)
+	const [isLoginModalOpen, setLoginModalOpen] = useState(false)
 	const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [isMobileLinksMenuOpen, setMobileLinksMenuOpen] = useState(false)
 	const [isClient, setIsClient] = useState(false)
@@ -21,14 +20,12 @@ export default function NavBar({ onLanguageChange }) {
 
 	const { t, i18n } = useTranslation('common')
 
-	// NOWY kontekst
 	const { user, isAuthed, setUser, setIsAuthed, refreshUser } = useContext(UserContext)
 
 	useEffect(() => {
 		setIsClient(true)
 	}, [])
 
-	// po udanym loginie/registracji odśwież usera z /api/auth/me
 	const handleLogin = async () => {
 		await refreshUser()
 		setLoginModalOpen(false)
@@ -99,7 +96,7 @@ export default function NavBar({ onLanguageChange }) {
 										alt="user menu"
 										onClick={() => {
 											setMobileMenuOpen(true)
-											setLoginModalOpen(!isAuthed) // pokaż login tylko gdy niezalogowany
+											setLoginModalOpen(!isAuthed)
 											setMobileLinksMenuOpen(false)
 										}}
 									/>
@@ -138,20 +135,18 @@ export default function NavBar({ onLanguageChange }) {
 								) : (
 									<>
 										<div className="elements-in-account-menu">
-											{/* === Gdy otwarty forgot -> pokazujemy TYLKO ten modal === */}
 											{isForgotOpen ? (
 												<ForgotPasswordModal
 													isOpen={isForgotOpen}
 													onRequestClose={() => {
 														setForgotOpen(false)
-														setLoginModalOpen(true) // po zamknięciu wracamy do logowania
+														setLoginModalOpen(true)
 													}}
 												/>
 											) : (
 												<>
 													<LoginModal isOpen={isLoginModalOpen} onLogin={handleLogin} />
 
-													{/* Przycisk "Zapomniałem hasła" */}
 													<div className="to-register-now" style={{ marginTop: '15px' }}>
 														<button
 															onClick={() => {
@@ -164,7 +159,6 @@ export default function NavBar({ onLanguageChange }) {
 														</button>
 													</div>
 
-													{/* Przycisk rejestracji */}
 													<div className="to-register-now">
 														<button
 															onClick={() => {

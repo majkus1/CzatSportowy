@@ -1,4 +1,3 @@
-// /pages/api/auth/google.js
 import { OAuth2Client } from 'google-auth-library';
 import connectToDb from '@/lib/db';
 import User from '@/models/User';
@@ -23,7 +22,7 @@ export default async function handler(req, res) {
       idToken: credential,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
-    const p = ticket.getPayload(); // { email, sub, name, picture, email_verified }
+    const p = ticket.getPayload(); 
 
     if (!p?.email || !p?.sub) return res.status(400).json({ error: 'Invalid Google token' });
     if (p.email_verified === false) return res.status(400).json({ error: 'Email not verified by Google' });
@@ -31,11 +30,10 @@ export default async function handler(req, res) {
     let user = await User.findOne({ $or: [{ googleId: p.sub }, { email: p.email.toLowerCase() }] });
 
     if (!user) {
-      // unikalny username
       const base = (p.name || p.email.split('@')[0]).replace(/\s+/g, '').slice(0, 20) || `user${p.sub.slice(-6)}`;
       let candidate = base;
       let i = 0;
-      // eslint-disable-next-line no-await-in-loop
+
       while (await User.findOne({ username: candidate })) { i += 1; candidate = `${base}${i}`; }
 
       user = await User.create({
@@ -54,7 +52,6 @@ export default async function handler(req, res) {
       }
     }
 
-    // wydaj access+refresh i zapisz hash refresh (ROTACJA kompatybilna z /api/auth/refresh)
     const accessToken  = signAccessToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 });
     const refreshToken = signRefreshToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 });
 
@@ -63,7 +60,6 @@ export default async function handler(req, res) {
 
     setAuthCookies(res, { accessToken, refreshToken });
 
-    // JSON minimalistyczny – front i tak woła /api/auth/me
     return res.status(200).json({ ok: true, username: user.username });
   } catch (err) {
     console.error('google auth error:', err);

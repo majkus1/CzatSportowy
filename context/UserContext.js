@@ -1,15 +1,14 @@
-// /context/UserContext.js
 import React from 'react';
 
 export const UserContext = React.createContext({
-  user: null,              // { userId, username, email, image }
+  user: null,              
   setUser: () => {},
 
-  isAuthed: false,         // true, jeśli zalogowany
+  isAuthed: false,         
   setIsAuthed: () => {},
 
-  // language: 'pl',
+  
   setLanguage: () => {},
 
-  refreshUser: async () => false, // pobiera /api/auth/me i ustawia user
+  refreshUser: async () => false, 
 });

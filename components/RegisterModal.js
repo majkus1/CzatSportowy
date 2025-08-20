@@ -1,4 +1,3 @@
-// /components/RegisterModal.js
 import React, { useState, useContext } from 'react'
 import { GiPlayButton } from 'react-icons/gi'
 import { useTranslation } from 'next-i18next'
@@ -33,14 +32,13 @@ export default function RegisterModal({ isOpen, onRequestClose, onRegister }) {
 				return
 			}
 
-			// sukces
 			const ok = await refreshUser()
 			if (ok) {
-				alert(t('register_success')) // np. dodaj w tłumaczeniach
+				alert(t('register_success'))
 				onRegister?.()
 				onRequestClose?.()
 			} else {
-				alert(t('profile_fetch_failed')) // np. dodaj w tłumaczeniach
+				alert(t('profile_fetch_failed'))
 			}
 		} catch (err) {
 			console.error(err)
@@ -53,7 +51,6 @@ export default function RegisterModal({ isOpen, onRequestClose, onRegister }) {
 			<div className="modal-register" onClick={e => e.stopPropagation()}>
 				<h2>{t('register')}</h2>
 
-				{/* Google register/login */}
 				<div className="mb-3">
 					<GoogleAuthButton onSuccessClose={onRequestClose} onLogin={onRegister} />
 				</div>

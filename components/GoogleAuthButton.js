@@ -1,4 +1,3 @@
-// components/GoogleAuthButton.js
 import { useEffect, useRef, useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
 import { useTranslation } from 'next-i18next'
@@ -30,8 +29,6 @@ export default function GoogleAuthButton({ onSuccessClose }) {
               alert(msg || 'Google login failed');
               return;
             }
-
-            // Cookies już ustawione – odśwież stan użytkownika
             await refreshUser();
             alert(t('login_success'));
             onSuccessClose?.();
@@ -52,7 +49,6 @@ export default function GoogleAuthButton({ onSuccessClose }) {
       });
     };
 
-    // doładuj skrypt tylko raz
     if (!document.getElementById(scriptId)) {
       const s = document.createElement('script');
       s.id = scriptId;

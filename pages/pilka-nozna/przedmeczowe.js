@@ -1,4 +1,3 @@
-// pages/pilka-nozna/przedmeczowe.jsx (lub Twój plik tej strony)
 import axios from 'axios'
 import { useState, useEffect, useContext } from 'react'
 import NavBar from '@/components/NavBar'
@@ -18,7 +17,6 @@ export default function Plfootball() {
 
   const { t } = useTranslation('common')
 
-  // NOWY kontekst
   const { user } = useContext(UserContext)
   const username = user?.username // jeśli gdzieś na stronie potrzebujesz
 

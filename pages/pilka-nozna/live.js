@@ -14,7 +14,7 @@ export default function Plfootball() {
 	const [activeChats, setActiveChats] = useState([])
 	const [searchTerm, setSearchTerm] = useState('')
 	const { user } = useContext(UserContext)
-	const username = user?.username // jeśli gdzieś na stronie potrzebujesz
+	const username = user?.username 
 	const { t } = useTranslation('common')
 
 	const handleLanguageChange = () => {

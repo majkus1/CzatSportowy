@@ -1,4 +1,3 @@
-// /pages/api/auth/me.js
 import connectToDb from '@/lib/db';
 import User from '@/models/User';
 import { readCookie, verifyJwt } from '@/lib/auth';
@@ -12,9 +11,9 @@ export default async function handler(req, res) {
 
     let decoded;
     try {
-      decoded = verifyJwt(at, process.env.JWT_SECRET); // { userId, tv }
+      decoded = verifyJwt(at, process.env.JWT_SECRET); 
     } catch (e) {
-      return res.status(401).end(); // access wygasł – front niech uderzy w /api/auth/refresh
+      return res.status(401).end(); 
     }
 
     const user = await User.findById(decoded.userId).select('username email image');

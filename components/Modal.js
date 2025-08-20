@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 const Modal = ({ onClose, children }) => {
-  // ESC zamyka
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onKey);
@@ -31,7 +30,6 @@ const modalStyle = {
   backgroundColor: '#fff',
   position: 'relative',
   width: 'min(800px, 95vw)',
-//   height: 'min(80vh, 95vh)',
   borderRadius: '12px',
   padding: '25px',
   overflowY: 'auto',

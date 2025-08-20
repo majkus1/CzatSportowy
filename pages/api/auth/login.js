@@ -1,4 +1,3 @@
-// /pages/api/auth/login.js
 import User from '@/models/User';
 import bcrypt from 'bcrypt';
 import connectToDb from '@/lib/db';
@@ -28,18 +27,14 @@ export default async function handler(req, res) {
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(401).send({ error: 'login_invalid' });
 
-    // Access + Refresh (ROTACJA po stronie /refresh)
     const accessToken  = signAccessToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 });
     const refreshToken = signRefreshToken({ userId: user.id, tokenVersion: user.tokenVersion || 0 });
 
-    // zapisz hash aktualnego refresh tokena (do rotacji/reuse detection)
     user.refreshTokenHash = await hashRefreshToken(refreshToken);
     await user.save();
 
-    // ustaw oba cookies (HttpOnly)
     setAuthCookies(res, { accessToken, refreshToken });
 
-    // JSON minimalny — dane profilu front pobierze z /api/auth/me
     res.status(200).json({ ok: true, username: user.username });
   } catch (err) {
     console.error('login error:', err);
