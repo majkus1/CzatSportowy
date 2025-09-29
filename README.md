@@ -2,6 +2,8 @@
 
 **Live sports chat platform with AI-powered match analysis**
 
+🌐 **[Live Application](https://czatsportowy.pl)** - Try it now!
+
 A real-time sports discussion platform built with Next.js, featuring live chat functionality, AI-generated match analysis, and comprehensive football statistics integration.
 
 ## 🌟 Features
